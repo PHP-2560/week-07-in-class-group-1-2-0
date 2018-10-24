@@ -45,16 +45,21 @@ Since you all have completed problem 1, you first step will be to work through e
 ``` {r} 
 Gamblers_Ruin_Func=function(bets = 100, bankroll = 1000, prob)
 {
-  Rec=c(bets)
-  while(A>0) {
-    ProbVal=runif(1)
-    if(ProbVal <= probs)
+  Rec=c(bets) # vector of Rec
+  while(bets > 0) {
+    ProbValue=runif(1)
+    
+# R Resource for runif:
+# These functions provide information about the uniform distribution on the interval from min to max. 
+    if(ProbValue <= probs)
     {
-      bankroll = bets+bankroll
+      bankroll = bets + bankroll
 
-      bets = (bankroll+bets)* 0.1
-    }else{
-      bankroll = bankroll-bets
+      bets = (bankroll + bets)* 0.1
+    }
+    else
+      {
+      bankroll = bankroll- bets
 
       bets = bets
       }
@@ -65,7 +70,7 @@ Gamblers_Ruin_Func=function(bets = 100, bankroll = 1000, prob)
   return(Duration)
 }
 
-#returns the length of Rec
+# returns the length of Rec
 ```
     
     
