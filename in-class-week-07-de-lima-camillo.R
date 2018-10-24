@@ -5,10 +5,10 @@
 
 #1)
 #returns times to lose, and money
-gamble = function(money = 1000, limit = 5000){
+gamble = function(money = 1000, limit = 5000, prob = 0.5){
   count = 0
   while (money>0 & count<limit){
-    money = money + 100*(2*rbinom(1,1, p = 0.5)-1)
+    money = money + 100*(2*rbinom(1,1, p = prob)-1)
     count = count + 1
   }
   if(count == limit){
