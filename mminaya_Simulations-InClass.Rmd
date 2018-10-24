@@ -65,6 +65,7 @@ Gamblers_Ruin_Func=function(bets = 100, bankroll = 1000, prob)
   return(Duration)
 }
 
+#returns the length of Rec
 
 ```
     
