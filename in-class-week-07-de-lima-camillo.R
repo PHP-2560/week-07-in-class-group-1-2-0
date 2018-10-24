@@ -70,18 +70,19 @@ var(simulation6[2, which(is.na(simulation6[1,]))]) #996864.1
 
 #3)
 unfair_game = function(money = 0, prob = 0.48, increment = 0.01){
+  probability = prob
   for (i in 1:100000){ #uses 100000 hands
-    temp = 2*rbinom(1,1,prob) - 1 #either wins or lose
+    temp = 2*rbinom(1,1,probability) - 1 #either wins or lose
     money = money + 100*temp #+ or - 100
     if (temp == 1){ #if it wins, changes the probability by the increment
-      if (prob<1){
-        prob = prob + increment
-        if (prob>1){
-          prob = 1
+      if (probability<1){
+        probability = probability + increment
+        if (probability>1){ #just in case there is a small error in the way R handles doubles and p gets slightly more than 1
+          probability = 1
         }
       }
     } else { #if it loses, resets the probability
-      prob = 0.48
+      probability = prob
     }
   }
   return(money)
@@ -93,18 +94,19 @@ mean(simulation4) #expected = -198732
 
 #b- 
 simulation5 = replicate(100, unfair_game(prob = 0.5))
-mean(simulation5) #-200732
+mean(simulation5) #281642
 simulation6 = replicate(100, unfair_game(prob = 0.46))
-mean(simulation6) #-201574
+mean(simulation6) #-618958
 #fair:
-probability = 0.5
+probability = 0.48
 fair = 999999
-while(fair > 5000){
-  probability = probability + 0.02
-  simulation7 = replicate(100, unfair_game(prob = 0.54)) #2602
+while(fair > 10000 & probability < 0.5){
+  probability = probability + 0.002
+  simulation7 = replicate(100, unfair_game(prob = probability)) #9488
   fair = abs(mean(simulation7))
 }
-#fair initial prob = 0.54
+print(probability)
+#fair initial prob = 0.49
 
 #c-
 #(sort of)fair:
@@ -114,7 +116,14 @@ mean(simulation8) #25340
 
 
 #4- 
-boot_ci = function()
+boot_ci = function(datus, repetitions = 1000){
+  boot = rep(NA, repetitions)
+  for (i in 1:repetitions){
+    temp = sample(datus, length(datus))
+    boot[i] = 
+  }
+  
+}
 
 
 
