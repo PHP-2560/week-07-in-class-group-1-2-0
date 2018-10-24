@@ -88,7 +88,7 @@ unfair_game = function(money = 0, prob = 0.48, increment = 0.01){
 }
 
 #a-
-simulation4 = RepParallel(100, unfair_game())
+simulation4 = replicate(100, unfair_game())
 mean(simulation4) #expected = -198732
 
 #b- 
@@ -97,13 +97,24 @@ mean(simulation5) #-200732
 simulation6 = replicate(100, unfair_game(prob = 0.46))
 mean(simulation6) #-201574
 #fair:
-simulation7 = replicate(100, unfair_game(prob = 0.74)) #5436
-mean(simulation7)
+probability = 0.5
+fair = 999999
+while(fair > 5000){
+  probability = probability + 0.02
+  simulation7 = replicate(100, unfair_game(prob = 0.54)) #2602
+  fair = abs(mean(simulation7))
+}
+#fair initial prob = 0.54
 
 #c-
 #(sort of)fair:
 simulation8 = replicate(100, unfair_game(increment = 0.012))
 mean(simulation8) #25340
+
+
+
+#4- 
+boot_ci = function()
 
 
 
