@@ -1,5 +1,6 @@
 # Continuing Simulations
 
+William Steele, Charles Steele, Lucas Paulo De Lima Camillo, Maydelis Minaya, Kitty Cheung 
 
 Many students have not complete the Gamblers Ruin Work Yet. In order to make sure you have a chance to do this code, we will extend this problem for use in class today. There are 3 additional questions from the Pre-Class work. 
 
