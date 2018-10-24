@@ -117,12 +117,13 @@ mean(simulation8) #25340
 
 #4- 
 boot_ci = function(datus, repetitions = 1000){
-  boot = rep(NA, repetitions)
+  boot = data.frame(matrix(rep(NA, 2*repetitions), nrow = 2)) #makes a df with two rows full of NAs
   for (i in 1:repetitions){
-    temp = sample(datus, length(datus))
-    boot[i] = 
+    temp = sample(datus, length(datus), replace = TRUE) #resample
+    boot[1,i] = quantile(temp, probs = c(0.025, 0.975))[[1]] #gets 0.025th percentile statistic
+    boot[2,i] = quantile(temp, probs = c(0.025, 0.975))[[2]] #gets 0.975th percentile statistic
   }
-  
+  return(c('0.025 percentile CI' =quantile(boot[1,], probs = c(0.05, 0.95)), '0.975 percentile CI' = quantile(boot[2,], probs = c(0.05, 0.95)))) #returns 95% CI
 }
 
 
