@@ -44,41 +44,28 @@ var(simulation3[2, which(is.na(simulation3[1,]))]) #2477144
 
 
 #2)
-unfair_game = function(money = 0, prob = 0.48, increment = 0.01){
-  for (i in 1:100000){
-    temp = 2*rbinom(1,1,prob) - 1
-    money = money + 100*temp
-    if (temp == 1){
-      if (prob<1){
-        prob = prob + increment
-        if (prob>1){
-          prob = 1
-        }
-      }
-    } else {
-      prob = 0.48
-    }
-  }
-  return(money)
-}
+
+n = 1000
+simulation4 = replicate(n, gamble(prob = 18/38))
 
 #a-
-simulation4 = RepParallel(100, unfair_game())
-mean(simulation4) #expected = -198732
+prob_a = length(which(simulation4[1,]<100))/n #0.476
 
-#b- 
-simulation5 = replicate(100, unfair_game(prob = 0.5))
-mean(simulation5) #-200732
-simulation6 = replicate(100, unfair_game(prob = 0.46))
-mean(simulation6) #-201574
-#fair:
-simulation7 = replicate(100, unfair_game(prob = 0.74)) #5436
-mean(simulation7)
+#b-
+prob_b = length(which(simulation4[1,]<500))/n #0.898
 
 #c-
-#(sort of)fair:
-simulation8 = replicate(100, unfair_game(increment = 0.012))
-mean(simulation8) #25340
+mean(simulation4[1,], na.rm = TRUE) 
+
+#d- 
+simulation5 = replicate(n, gamble(limit = 100, prob = 18/38))
+mean(simulation5[2, which(is.na(simulation5[1,]))]) 
+var(simulation5[2, which(is.na(simulation5[1,]))]) 
+
+#e-
+simulation6 = replicate(n, gamble(limit = 500, prob = 18/38))
+mean(simulation6[2, which(is.na(simulation6[1,]))]) 
+var(simulation6[2, which(is.na(simulation6[1,]))]) 
 
 
 
