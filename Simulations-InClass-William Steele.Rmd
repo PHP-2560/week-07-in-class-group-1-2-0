@@ -3,8 +3,6 @@ title: "Simulations In-Class Project"
 date: "Due October 13, 2017 at 11:59pm"
 output:
   html_document
-  
-  
 
 
 ---
@@ -23,11 +21,7 @@ output:
 options(scipen = 3, digits = 3)
 ```
 
-``` {r}
-# Maydelis K. Minaya 
-# Week 7 In-class
 
-```
 
 
 #Project Goals:
@@ -41,43 +35,65 @@ Since you all have completed problem 1, you first step will be to work through e
 
  1. **Gambler's Ruin**: Suppose you have a bankroll of $1000 and make bets of $100 on a fair game. By simulating the outcome directly for at most 5000 iterations of the game (or hands), estimate:
     a. the probability that you have "busted" (lost all your money) by the time you have placed your one hundredth bet. 
-
-``` {r} 
-Gamblers_Ruin_Func=function(bets = 100, bankroll = 1000, prob)
-{
-  Rec=c(bets) # vector of Rec
-  while(bets > 0) {
-    ProbValue=runif(1)
-    
-# R Resource for runif:
-# These functions provide information about the uniform distribution on the interval from min to max. 
-    if(ProbValue <= probs)
+    ``` {r}
+gamblers_ruin =function(bet,bankroll,prob) { #creating function gamblers_ruin
+  count=0
+  while(bet>0) { #while the bet is still positive, hence above 0
+    ProbVal=runif(1)
+    if(ProbVal <= prob)   
     {
-      bankroll = bets + bankroll
-
-      bets = (bankroll + bets)* 0.1
-    }
-    else
-      {
-      bankroll = bankroll- bets
-
-      bets = bets
+      bankroll = bet + bankroll #win bet
+    } else {
+      bankroll = bankroll-bet  #lose bet
+      bet = bet
       }
-    Rec = c(Rec,bets)
-    if(bankroll< bets){break}
+    count = count + 1   
+    if(bankroll < bet) { #if your bankroll is less than bet
+      break
+      }   
   }
-  Duration = length(Rec)
-  return(Duration)
+  
+  duration = count
+  return(duration)
 }
 
-# returns the length of Rec
-```
+durations = numeric()
+N = 1000
+for(i in 1:N) {
+  trial = gamblers_ruin(100,900,0.5)
+  durations = c(durations,trial)
+}
+    
+total = length(durations)
+probability = length(which(durations<=100))/total
+probability
     
     
+    ```
     b. the probability that you have busted by the time you have placed your five hundredth bet by simulating the outcome directly. 
+    ``` {r}
+    
+    
+    
+    ```
     c. the mean time you go bust, given that you go bust within the first 5000 hands.
+    ``` {r}
+    
+    
+    
+    ```
     d. the mean and variance of your bankroll after 100 hands (including busts).
+    ``` {r}
+    
+    
+    
+    ```
     e. the mean and variance of your bankroll after 500 hands (including busts).
+    ``` {r}
+    
+    
+    
+    ```
  
 Note: you *must* stop playing if your player has gone bust. How will you handle this in the `for` loop?
 

@@ -5,14 +5,14 @@
 
 #1)
 #returns times to lose, and money
-gamble = function(money = 1000, limit = 5000){
+gamble = function(money = 1000, limit = 5000, prob = 0.5){
   count = 0
-  while (money>0 & count<limit){
-    money = money + 100*(2*rbinom(1,1, p = 0.5)-1)
+  while (money>0 & count<limit){ #keeps going up to the limit of hands and money is bigger than 0
+    money = money + 100*(2*rbinom(1,1, p = prob)-1) #random win or lose
     count = count + 1
   }
-  if(count == limit){
-    return(c(NA, money))
+  if(count == limit){#returns the number of hands it took to lose and the money
+    return(c(NA, money)) #if the person did not lose in the limit number of hands, returns NA and the amount of money
   }else{
     return(c(count, money))
   }
@@ -44,41 +44,86 @@ var(simulation3[2, which(is.na(simulation3[1,]))]) #2477144
 
 
 #2)
+
+n = 1000
+simulation4 = replicate(n, gamble(prob = 18/38))
+
+#a-
+prob_a = length(which(simulation4[1,]<100))/n #0.476
+
+#b-
+prob_b = length(which(simulation4[1,]<500))/n #0.898
+
+#c-
+mean(simulation4[1,], na.rm = TRUE) #212.758
+
+#d- 
+simulation5 = replicate(n, gamble(limit = 100, prob = 18/38))
+mean(simulation5[2, which(is.na(simulation5[1,]))]) #1211.268
+var(simulation5[2, which(is.na(simulation5[1,]))]) #467292.1
+
+#e-
+simulation6 = replicate(n, gamble(limit = 500, prob = 18/38))
+mean(simulation6[2, which(is.na(simulation6[1,]))]) #2029.213
+var(simulation6[2, which(is.na(simulation6[1,]))]) #996864.1
+
+
+#3)
 unfair_game = function(money = 0, prob = 0.48, increment = 0.01){
-  for (i in 1:100000){
-    temp = 2*rbinom(1,1,prob) - 1
-    money = money + 100*temp
-    if (temp == 1){
-      if (prob<1){
-        prob = prob + increment
-        if (prob>1){
-          prob = 1
+  probability = prob
+  for (i in 1:100000){ #uses 100000 hands
+    temp = 2*rbinom(1,1,probability) - 1 #either wins or lose
+    money = money + 100*temp #+ or - 100
+    if (temp == 1){ #if it wins, changes the probability by the increment
+      if (probability<1){
+        probability = probability + increment
+        if (probability>1){ #just in case there is a small error in the way R handles doubles and p gets slightly more than 1
+          probability = 1
         }
       }
-    } else {
-      prob = 0.48
+    } else { #if it loses, resets the probability
+      probability = prob
     }
   }
   return(money)
 }
 
 #a-
-simulation4 = RepParallel(100, unfair_game())
+simulation4 = replicate(100, unfair_game())
 mean(simulation4) #expected = -198732
 
 #b- 
 simulation5 = replicate(100, unfair_game(prob = 0.5))
-mean(simulation5) #-200732
+mean(simulation5) #281642
 simulation6 = replicate(100, unfair_game(prob = 0.46))
-mean(simulation6) #-201574
+mean(simulation6) #-618958
 #fair:
-simulation7 = replicate(100, unfair_game(prob = 0.74)) #5436
-mean(simulation7)
+probability = 0.48
+fair = 999999
+while(fair > 10000 & probability < 0.5){
+  probability = probability + 0.002
+  simulation7 = replicate(100, unfair_game(prob = probability)) #9488
+  fair = abs(mean(simulation7))
+}
+print(probability)
+#fair initial prob = 0.49
 
 #c-
 #(sort of)fair:
 simulation8 = replicate(100, unfair_game(increment = 0.012))
 mean(simulation8) #25340
+
+
+
+#4- 
+boot_ci = function(datus, repetitions = 1000){
+  boot = rep(NA, repetitions)
+  for (i in 1:repetitions){
+    temp = sample(datus, length(datus))
+    boot[i] = 
+  }
+  
+}
 
 
 
