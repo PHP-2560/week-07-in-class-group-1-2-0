@@ -66,8 +66,6 @@ Gamblers_Ruin_Func=function(bets = 100, bankroll = 1000, prob)
 }
 
 #returns the length of Rec
-#...
-# May S
 ```
     
     
