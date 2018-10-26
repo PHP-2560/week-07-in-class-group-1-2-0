@@ -192,31 +192,57 @@ mcGamb_var = var(mcGamb_data)
 ```
     b. Repeat this process but change the starting probability to a new value within 2% either way. Get the expected return after 100 repetitions. Keep exploring until you have a return value that is as fair as you can make it. Can you do this automatically?
 ```{r}
-mcGamblers_auto = function(bankroll = 50000, betCost = 100, numHands = 100, init = .46) {
-  difference = 55000
-  while (abs(difference) > 50000) {
-    
-    replicate(1000,
-              for (i in c(1:100)) {
+mcGamblers_auto = function(bankroll = 0, betCost = 100, init = .46) {
+
+    for (i in 1:100) {
       aBet = rbinom(1,1,init)
       if (aBet == 1 & init < 1) {
-        bankroll = bankroll + betCost
-      } else if (aBet == 1) {
         bankroll = bankroll + betCost
       } else {
         bankroll = bankroll - betCost
       }
-    })
-    if (difference = bankroll - 50000
+    }
+    return(bankroll)
 }
+ 
 
- {
-  
-      }
-      return(c(difference, bankroll,init))
+simul = function() {
+  difference = 999999
+  probability = .46
+  while (difference > 5000 & probability < .5) {
+    aVector = replicate(100, mcGamblers_auto())
+    if (abs(mean(avector)) > 10000) {
+      probability = probability + .01
+      replicate(100, mcGamblers_auto(0, 100,probability))
+    } else {
+      break
+    }
   }
+  return(probability)
+}
+  
+
 ```
     c. Repeat again, keeping the initial probability at 48%, but this time change the probability increment to a value different from 1%. Get the expected return after 100 repetitions. Keep changing this value until you have a return value that is as fair as you can make it. 
+```{r}
+simul2 = function() {
+  difference = 999999
+  probability = .46
+  while (difference > 5000 & probability < .5) {
+    aVector = replicate(100, mcGamblers_auto())
+    if (abs(mean(avector)) > 10000) {
+      probability = probability + .005
+      replicate(100, mcGamblers_auto(0, 100,probability))
+    } else {
+      break
+    }
+  }
+  return(probability)
+}
+  
+
+
+```
 
 
 4. Creating a Bootstrap function. There is a particular concept called [bootstrapping]
