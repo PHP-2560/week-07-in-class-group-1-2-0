@@ -170,7 +170,15 @@ The steps of this process are:
 
   a. Draw a sample, with replacement, from your data which is the same length of your data.
 ``` {r}
-
+boot_ci = function(datus, FUN, repetitions = 1000){
+  boot = rep(NA, length(datus)) #makes a vector full of NAs
+  for (i in 1:repetitions){
+    temp = sample(datus, length(datus), replace = TRUE) #resample
+    boot[i] = FUN(temp) #get statistic
+  }
+  CI
+  return(c('0.025 percentile' =quantile(boot, probs = c(0.025, 0.975))[[1]], '0.975 percentile' = quantile(boot, probs = c(0.025, 0.975))[[2]])) #returns 95% CI
+}
 
 ```
   b. Calculate the statistic of interest on this boostrap sample (ie mean, variance, regression,...)
