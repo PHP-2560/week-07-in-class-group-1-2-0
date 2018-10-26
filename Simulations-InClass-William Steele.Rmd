@@ -58,7 +58,7 @@ gamblers_ruin =function(bet,bankroll,prob) { #creating function gamblers_ruin
 }
 
 durations = numeric()
-N = 1000
+N = 5000
 for(i in 1:N) {
   trial = gamblers_ruin(100,900,0.5)
   durations = c(durations,trial)
@@ -72,26 +72,89 @@ probability
     ```
     b. the probability that you have busted by the time you have placed your five hundredth bet by simulating the outcome directly. 
     ``` {r}
-    
+total_bets = length(durations)
+prob_bust_by_500 = length(which(durations<=500))/total
+prob_bust_by_500
     
     
     ```
     c. the mean time you go bust, given that you go bust within the first 5000 hands.
     ``` {r}
-    
+    mean_bust_time500 = mean(durations[which(durations<=5000)])
+    mean_bust_time500
     
     
     ```
     d. the mean and variance of your bankroll after 100 hands (including busts).
     ``` {r}
-    
+gamblers_ruin2 =function(bet,bankroll,prob) {
+  count = 1
+  while(bet>0) {
+    ProbVal=runif(1)
+    if(ProbVal <= prob)
+    {
+      bankroll = bet + bankroll #win bet
+      bet = (bet + bankroll)*0.1
+    }else{
+      bankroll = bankroll-bet #lose bet
+      bet = bet
+      }
+    count = count + 1
+    if(count ==100){break}  #setting count criteria to break after 100 hands
+    if(bankroll<bet){break}
+  }
+  duration = count
+  return(bankroll)
+}
+
+bankroll=numeric()
+a = 5000
+for(i in 1:a)
+{
+  nextb = gamblers_ruin2(100,900,0.5)
+  bankroll=c(bankroll,nextb)
+}
+
+mean(bankroll, na.rm = T)
+var(bankroll)
     
     
     ```
     e. the mean and variance of your bankroll after 500 hands (including busts).
     ``` {r}
     
-    
+gamblers_ruin3 = function(bet,bankroll,prob)
+{
+  count = 0
+  while(bet>0) {
+    ProbVal=runif(1)
+    if(ProbVal <= prob)
+    {
+      bankroll = bet + bankroll #win bet
+      bet = (bet + bankroll)*0.1
+    }else{
+      bankroll = bankroll-bet #lose bet
+      bet = bet
+      }
+    count = count + 1
+    if(count ==500){break}  #break if number of hands is equal to 500
+    if(bankroll< bet){break}
+  }
+  duration = count
+  return(bankroll)
+  
+}
+
+bankroll=numeric()
+a = 5000
+for(i in 1:a)
+{
+  nextb = gamblers_ruin3(100,900,0.5)
+  bankroll=c(bankroll,nextb)
+}
+
+mean(bankroll)
+var(bankroll)
     
     ```
  
